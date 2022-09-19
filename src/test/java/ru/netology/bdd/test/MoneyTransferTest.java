@@ -78,5 +78,27 @@ class MoneyTransferTest {
         assertEquals(10000 - amount, secondCardBalance);
     }
 
+    @Test
+    void shouldTransferNotWholeAmountFromFirstToSecondCard() {
+        var DashboardPage = new DashboardPage();
+        DashboardPage.replenishSecondCardClick();
+        var ReplenishmentPage = new ReplenishmentPage();
+        var amount = 500.43;
+        ReplenishmentPage.successTransferCardToCard(String.valueOf(amount), DataHelper.getFirstCard().getNumber());
+        var firstCardBalance = DashboardPage.getCardBalance(DataHelper.getFirstCard().getId());
+        var secondCardBalance = DashboardPage.getCardBalance(DataHelper.getSecondCard().getId());
+        assertEquals(10000 - amount, firstCardBalance);
+        assertEquals(10000 + amount, secondCardBalance);
+    }
+
+    @Test
+    void shouldNotTransferAmountGreaterBalanceFromSecondToFirstCard() {
+        var DashboardPage = new DashboardPage();
+        DashboardPage.replenishFirstCardClick();
+        var ReplenishmentPage = new ReplenishmentPage();
+        var amount = 11000;
+        ReplenishmentPage.unSuccessTransferCardToCard(String.valueOf(amount), DataHelper.getSecondCard().getNumber());
+    }
+
 
 }
