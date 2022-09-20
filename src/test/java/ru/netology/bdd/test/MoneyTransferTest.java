@@ -83,7 +83,7 @@ class MoneyTransferTest {
         var DashboardPage = new DashboardPage();
         DashboardPage.replenishSecondCardClick();
         var ReplenishmentPage = new ReplenishmentPage();
-        var amount = 500.43;
+        var amount = 500.00;
         ReplenishmentPage.successTransferCardToCard(String.valueOf(amount), DataHelper.getFirstCard().getNumber());
         var firstCardBalance = DashboardPage.getCardBalance(DataHelper.getFirstCard().getId());
         var secondCardBalance = DashboardPage.getCardBalance(DataHelper.getSecondCard().getId());
