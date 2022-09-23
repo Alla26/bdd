@@ -1,10 +1,8 @@
 package ru.netology.bdd.page;
 
-import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
-import lombok.val;
+import ru.netology.bdd.data.DataHelper;
 
-import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.*;
 
@@ -22,18 +20,13 @@ public class ReplenishmentPage {
         heading.shouldBe(visible);
     }
 
-    public DashboardPage successTransferCardToCard(String amount, String from) {
-        amountField.val(amount);
-        whereFrom.val(from);
+    public DashboardPage transferCardToCard(String amount, DataHelper.Card from) {
+        amountField.click();
+        amountField.setValue(amount);
+        whereFrom.click();
+        whereFrom.setValue(from.getNumber());
         button.click();
         return new DashboardPage();
     }
 
-    public ReplenishmentPage unSuccessTransferCardToCard(String amount, String from) {
-        amountField.val(amount);
-        whereFrom.val(from);
-        button.click();
-        errorNotification.shouldHave(text("Ошибка!"));
-        return new ReplenishmentPage();
-    }
 }

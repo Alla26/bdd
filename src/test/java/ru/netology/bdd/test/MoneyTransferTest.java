@@ -33,71 +33,66 @@ class MoneyTransferTest {
         var verificationPage = loginPage.validLogin(authInfo);
         var verificationCode = DataHelper.getVerificationCodeFor(authInfo);
         verificationPage.validVerify(verificationCode);
-        var DashboardPage = new DashboardPage();
-        var firstCardBalance = DashboardPage.getCardBalance(DataHelper.getFirstCard().getId());
-        var secondCardBalance = DashboardPage.getCardBalance(DataHelper.getSecondCard().getId());
+        var dashboardPage = new DashboardPage();
+        var firstCardBalance = dashboardPage.getCardBalance(DataHelper.getFirstCard().getId());
+        var secondCardBalance = dashboardPage.getCardBalance(DataHelper.getSecondCard().getId());
         if (firstCardBalance > secondCardBalance) {
-            DashboardPage.replenishSecondCardClick();
+            dashboardPage.replenishSecondCardClick();
             var ReplenishmentPage = new ReplenishmentPage();
-            ReplenishmentPage.successTransferCardToCard(String.valueOf((firstCardBalance - secondCardBalance) / 2), DataHelper.getFirstCard().getNumber());
+            ReplenishmentPage.transferCardToCard(String.valueOf((firstCardBalance - secondCardBalance) / 2), DataHelper.getFirstCard());
         } else if (firstCardBalance < secondCardBalance) {
-            DashboardPage.replenishFirstCardClick();
+            dashboardPage.replenishFirstCardClick();
             var ReplenishmentPage = new ReplenishmentPage();
-            ReplenishmentPage.successTransferCardToCard(String.valueOf((secondCardBalance - firstCardBalance) / 2), DataHelper.getSecondCard().getNumber());
+            ReplenishmentPage.transferCardToCard(String.valueOf((secondCardBalance - firstCardBalance) / 2), DataHelper.getSecondCard());
         }
-    }
-
-    @AfterEach
-    void closeWebBrowser() {
-        closeWebDriver();
     }
 
     @Test
     void shouldTransferMoneyFromFirstToSecondCard() {
-        var DashboardPage = new DashboardPage();
-        DashboardPage.replenishSecondCardClick();
+        var dashboardPage = new DashboardPage();
+        dashboardPage.replenishSecondCardClick();
         var ReplenishmentPage = new ReplenishmentPage();
         var amount = 7000;
-        ReplenishmentPage.successTransferCardToCard(String.valueOf(amount), DataHelper.getFirstCard().getNumber());
-        var firstCardBalance = DashboardPage.getCardBalance(DataHelper.getFirstCard().getId());
-        var secondCardBalance = DashboardPage.getCardBalance(DataHelper.getSecondCard().getId());
+        ReplenishmentPage.transferCardToCard(String.valueOf(amount), DataHelper.getFirstCard());
+        var firstCardBalance = dashboardPage.getCardBalance(DataHelper.getFirstCard().getId());
+        var secondCardBalance = dashboardPage.getCardBalance(DataHelper.getSecondCard().getId());
         assertEquals(10000 - amount, firstCardBalance);
         assertEquals(10000 + amount, secondCardBalance);
     }
 
     @Test
     void shouldTransferMoneyFromSecondToFirstCard() {
-        var DashboardPage = new DashboardPage();
-        DashboardPage.replenishFirstCardClick();
+        var dashboardPage = new DashboardPage();
+        dashboardPage.replenishFirstCardClick();
         var ReplenishmentPage = new ReplenishmentPage();
         var amount = 3500;
-        ReplenishmentPage.successTransferCardToCard(String.valueOf(amount), DataHelper.getSecondCard().getNumber());
-        var firstCardBalance = DashboardPage.getCardBalance(DataHelper.getFirstCard().getId());
-        var secondCardBalance = DashboardPage.getCardBalance(DataHelper.getSecondCard().getId());
+        ReplenishmentPage.transferCardToCard(String.valueOf(amount), DataHelper.getSecondCard());
+        var firstCardBalance = dashboardPage.getCardBalance(DataHelper.getFirstCard().getId());
+        var secondCardBalance = dashboardPage.getCardBalance(DataHelper.getSecondCard().getId());
         assertEquals(10000 + amount, firstCardBalance);
         assertEquals(10000 - amount, secondCardBalance);
     }
 
     @Test
     void shouldTransferNotWholeAmountFromFirstToSecondCard() {
-        var DashboardPage = new DashboardPage();
-        DashboardPage.replenishSecondCardClick();
+        var dashboardPage = new DashboardPage();
+        dashboardPage.replenishSecondCardClick();
         var ReplenishmentPage = new ReplenishmentPage();
-        var amount = 500.00;
-        ReplenishmentPage.successTransferCardToCard(String.valueOf(amount), DataHelper.getFirstCard().getNumber());
-        var firstCardBalance = DashboardPage.getCardBalance(DataHelper.getFirstCard().getId());
-        var secondCardBalance = DashboardPage.getCardBalance(DataHelper.getSecondCard().getId());
+        var amount = 500;
+        ReplenishmentPage.transferCardToCard(String.valueOf(amount), DataHelper.getFirstCard());
+        var firstCardBalance = dashboardPage.getCardBalance(DataHelper.getFirstCard().getId());
+        var secondCardBalance = dashboardPage.getCardBalance(DataHelper.getSecondCard().getId());
         assertEquals(10000 - amount, firstCardBalance);
         assertEquals(10000 + amount, secondCardBalance);
     }
 
     @Test
     void shouldNotTransferAmountGreaterBalanceFromSecondToFirstCard() {
-        var DashboardPage = new DashboardPage();
-        DashboardPage.replenishFirstCardClick();
+        var dashboardPage = new DashboardPage();
+        dashboardPage.replenishFirstCardClick();
         var ReplenishmentPage = new ReplenishmentPage();
         var amount = 11000;
-        ReplenishmentPage.unSuccessTransferCardToCard(String.valueOf(amount), DataHelper.getSecondCard().getNumber());
+        ReplenishmentPage.transferCardToCard(String.valueOf(amount), DataHelper.getSecondCard());
     }
 
 
