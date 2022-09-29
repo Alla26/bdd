@@ -92,8 +92,9 @@ class MoneyTransferTest {
         dashboardPage.replenishFirstCardClick();
         var ReplenishmentPage = new ReplenishmentPage();
         var amount = 11000;
-        ReplenishmentPage.transferCardToCard(String.valueOf(amount), DataHelper.getSecondCard());
+        ReplenishmentPage.invalidTransferCardToCard(String.valueOf(amount), DataHelper.getSecondCard());
+        assertEquals(10000, dashboardPage.getCardBalance(DataHelper.getFirstCard().getId()));
+        assertEquals(10000, dashboardPage.getCardBalance(DataHelper.getSecondCard().getId()));
     }
-
 
 }

@@ -1,7 +1,10 @@
 package ru.netology.bdd.page;
 
+import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.SelenideElement;
 import ru.netology.bdd.data.DataHelper;
+
+import java.time.Duration;
 
 import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.*;
@@ -26,6 +29,17 @@ public class ReplenishmentPage {
         whereFrom.click();
         whereFrom.setValue(from.getNumber());
         button.click();
+        return new DashboardPage();
+    }
+
+    public DashboardPage invalidTransferCardToCard(String amount, DataHelper.Card from) {
+        amountField.click();
+        amountField.setValue(amount);
+        whereFrom.click();
+        whereFrom.setValue(from.getNumber());
+        button.click();
+        $("#root").shouldBe(Condition.visible, Duration.ofSeconds(15));
+        $("#root").shouldHave(Condition.exactText("Ошибка"));
         return new DashboardPage();
     }
 
