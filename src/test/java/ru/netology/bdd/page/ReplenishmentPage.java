@@ -32,12 +32,7 @@ public class ReplenishmentPage {
         return new DashboardPage();
     }
 
-    public DashboardPage invalidTransferCardToCard(String amount, DataHelper.Card from) {
-        amountField.click();
-        amountField.setValue(amount);
-        whereFrom.click();
-        whereFrom.setValue(from.getNumber());
-        button.click();
+    public DashboardPage waitingError() {
         $("#root").shouldBe(Condition.visible, Duration.ofSeconds(15));
         $("#root").shouldHave(Condition.exactText("Ошибка"));
         return new DashboardPage();
